@@ -1,6 +1,6 @@
 .oh-my-zsh/cache/
 .zshrc.local
-.config/powershell/profile.local.ps1
+.config/powershell/coreutils.generated.ps1
 
 {{ if ne .chezmoi.os "windows" }}
 .config/fastfetch/winget-count.ps1

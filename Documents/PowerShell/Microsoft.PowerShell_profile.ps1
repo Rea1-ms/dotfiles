@@ -1,4 +1,4 @@
-# 由 chezmoi 管理的 PowerShell 7 配置。
+# 由 chezmoi 直接管理的 PowerShell 7 profile。
 
 if (-not $global:DotfilesPowerShellProfileLoaded) {
     $global:DotfilesPowerShellProfileLoaded = $true
@@ -42,9 +42,12 @@ if (-not $global:DotfilesPowerShellProfileLoaded) {
         Invoke-Expression (&starship init powershell)
     }
 
-    # 私密或仅限当前设备的设置放在这里，这个文件不会由 chezmoi 管理。
-    $localProfile = Join-Path $HOME ".config\powershell\profile.local.ps1"
-    if (Test-Path -LiteralPath $localProfile) {
-        . $localProfile
+    $coreutilsProfile = Join-Path $HOME ".config\powershell\coreutils.generated.ps1"
+    if (Test-Path -LiteralPath $coreutilsProfile) {
+        . $coreutilsProfile
+    }
+
+    if (Get-Command ls.exe -ErrorAction SilentlyContinue) {
+        function global:ll { ls.exe -l --color=auto @args }
     }
 }

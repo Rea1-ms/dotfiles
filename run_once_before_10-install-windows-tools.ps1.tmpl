@@ -9,8 +9,7 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 function Install-WingetPackage {
     param(
         [Parameter(Mandatory = $true)]
-        [string]$Id,
-        [switch]$Force
+        [string]$Id
     )
 
     $arguments = @(
@@ -18,10 +17,6 @@ function Install-WingetPackage {
         "--accept-package-agreements", "--accept-source-agreements",
         "--disable-interactivity"
     )
-    if ($Force) {
-        $arguments += "--force"
-    }
-
     & winget @arguments
     if ($LASTEXITCODE -ne 0) {
         throw "winget 安装 $Id 失败，退出代码：$LASTEXITCODE"
@@ -86,44 +81,15 @@ if (-not (Get-Command fastfetch -ErrorAction SilentlyContinue)) {
 
 $coreutilsRoot = Join-Path $env:ProgramFiles "coreutils"
 $coreutilsExecutable = Join-Path $coreutilsRoot "coreutils.exe"
-$coreutilsInstaller = Join-Path $coreutilsRoot "pwsh-install.ps1"
+$coreutilsTemplate = Join-Path $coreutilsRoot "pwsh-install-template.ps1"
 $coreutilsCmdDirectory = Join-Path $coreutilsRoot "cmd"
-$coreutilsMarker = "60b36fc6-2d59-49df-be51-28dd2f4c3c9a"
-$pwshProfilePath = Join-Path ([Environment]::GetFolderPath("MyDocuments")) "PowerShell\Microsoft.PowerShell_profile.ps1"
-
-function Get-CoreutilsMarkerCount {
-    if (-not (Test-Path -LiteralPath $pwshProfilePath -PathType Leaf)) {
-        return 0
-    }
-
-    return ([regex]::Matches(
-        (Get-Content -LiteralPath $pwshProfilePath -Raw),
-        [regex]::Escape($coreutilsMarker)
-    )).Count
-}
-
-$markerCount = Get-CoreutilsMarkerCount
 if (-not (Test-Path -LiteralPath $coreutilsExecutable -PathType Leaf)) {
     Install-WingetPackage -Id "Microsoft.Coreutils"
-} elseif ($markerCount -eq 0) {
-    # 重新运行官方安装器，让它为当前用户生成 PowerShell 集成段。
-    Install-WingetPackage -Id "Microsoft.Coreutils" -Force
-} elseif ($markerCount -ne 2) {
-    throw "PowerShell profile 中的 Coreutils 标记不完整，请先手动修复：$pwshProfilePath"
 }
 
-if (-not (Test-Path -LiteralPath $coreutilsInstaller -PathType Leaf)) {
-    throw "Coreutils 安装完成后仍未找到集成脚本：$coreutilsInstaller"
-}
-
-$markerCount = Get-CoreutilsMarkerCount
-if ($markerCount -ne 2) {
-    throw "Coreutils 安装器没有生成完整的 PowerShell 集成段：$pwshProfilePath"
-}
-
-& $pwshPath -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass `
-    -File $coreutilsInstaller -Action Refresh -CmdDir $coreutilsCmdDirectory
-if ($LASTEXITCODE -ne 0) {
-    throw "刷新 Coreutils PowerShell 集成失败，退出代码：$LASTEXITCODE"
+if (-not (Test-Path -LiteralPath $coreutilsExecutable -PathType Leaf) -or
+    -not (Test-Path -LiteralPath $coreutilsTemplate -PathType Leaf) -or
+    -not (Test-Path -LiteralPath $coreutilsCmdDirectory -PathType Container)) {
+    throw "Coreutils 安装不完整：$coreutilsRoot"
 }
 {{ end -}}

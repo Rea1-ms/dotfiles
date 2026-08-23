@@ -1,0 +1,60 @@
+{{ if eq .chezmoi.os "windows" -}}
+$ErrorActionPreference = "Stop"
+
+$coreutilsRoot = Join-Path $env:ProgramFiles "coreutils"
+$templatePath = Join-Path $coreutilsRoot "pwsh-install-template.ps1"
+$cmdDirectory = Join-Path $coreutilsRoot "cmd"
+$outputPath = Join-Path $HOME ".config\powershell\coreutils.generated.ps1"
+
+if (-not (Test-Path -LiteralPath $templatePath -PathType Leaf) -or
+    -not (Test-Path -LiteralPath $cmdDirectory -PathType Container)) {
+    throw "未找到 Coreutils PowerShell 模板，请先安装 Microsoft.Coreutils。"
+}
+
+[string[]]$disabledUtilities = @()
+$registryPath = "HKLM:\SOFTWARE\Microsoft\coreutils"
+$registryName = "DisabledUtilities"
+$properties = Get-ItemProperty -LiteralPath $registryPath -Name $registryName -ErrorAction Ignore
+if ($properties) {
+    $disabledUtilities = $properties.$registryName
+}
+$disabled = [System.Collections.Generic.HashSet[string]]::new(
+    $disabledUtilities,
+    [System.StringComparer]::OrdinalIgnoreCase
+)
+
+$utilities = [System.Collections.Generic.HashSet[string]]::new(
+    [System.StringComparer]::OrdinalIgnoreCase
+)
+foreach ($file in Get-ChildItem -LiteralPath $cmdDirectory -Filter "*.cmd" -File) {
+    $name = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
+    if ($name -and -not $disabled.Contains($name)) {
+        [void]$utilities.Add($name)
+    }
+}
+[void]$utilities.Remove("coreutils-manager")
+if ($utilities.Contains("ls")) {
+    [void]$utilities.Add("la")
+}
+
+$aliases = ($utilities | Sort-Object | ForEach-Object { "'$_'" }) -join ","
+$cmdPath = [System.IO.Path]::GetFullPath($cmdDirectory).TrimEnd("\") + "\"
+$generated = (Get-Content -LiteralPath $templatePath -Raw).
+    Replace("'!!COREUTILS!!'", $aliases).
+    Replace("!!CMDDIR!!", $cmdPath.Replace("'", "''")).
+    TrimEnd("`r", "`n") + [Environment]::NewLine
+
+$current = if (Test-Path -LiteralPath $outputPath -PathType Leaf) {
+    Get-Content -LiteralPath $outputPath -Raw
+} else {
+    ""
+}
+if ($generated -cne $current) {
+    New-Item -ItemType Directory -Path (Split-Path -Parent $outputPath) -Force | Out-Null
+    [System.IO.File]::WriteAllText(
+        $outputPath,
+        $generated,
+        [System.Text.UTF8Encoding]::new($false)
+    )
+}
+{{ end -}}
