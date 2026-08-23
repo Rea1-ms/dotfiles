@@ -1,0 +1,11 @@
+theme = Adwaita Dark
+shell-integration = fish
+command = /usr/bin/fish
+window-decoration = none
+
+custom-shader = shaders/cursor_tail.glsl
+copy-on-select = clipboard
+
+background-opacity = 0.85
+background-blur = 20
+background-opacity-cells = false
