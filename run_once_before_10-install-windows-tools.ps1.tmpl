@@ -1,0 +1,16 @@
+{{ if eq .chezmoi.os "windows" -}}
+$ErrorActionPreference = "Stop"
+
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Warning "没有找到 winget，请手动安装 Starship 和 Fastfetch。"
+    exit 0
+}
+
+if (-not (Get-Command starship -ErrorAction SilentlyContinue)) {
+    winget install --id Starship.Starship --exact --accept-package-agreements --accept-source-agreements
+}
+
+if (-not (Get-Command fastfetch -ErrorAction SilentlyContinue)) {
+    winget install fastfetch --accept-package-agreements --accept-source-agreements
+}
+{{ end -}}

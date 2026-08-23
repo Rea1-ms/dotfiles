@@ -1,0 +1,54 @@
+{{ if ne .chezmoi.os "windows" -}}
+#!/bin/sh
+set -eu
+
+has() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+as_root() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  elif has sudo; then
+    sudo "$@"
+  else
+    echo "无法安装软件包：需要 root 或 sudo 权限。" >&2
+    return 1
+  fi
+}
+
+if has pkg; then
+  pkg install -y git zsh starship fastfetch
+elif has pacman; then
+  as_root pacman -S --needed --noconfirm git zsh starship fastfetch
+elif has apt-get; then
+  as_root apt-get update
+  as_root apt-get install -y git zsh curl
+  if apt-cache show starship >/dev/null 2>&1; then
+    as_root apt-get install -y starship
+  else
+    echo "当前 APT 软件源没有 Starship，Zsh 将使用基础提示符。" >&2
+  fi
+  if apt-cache show fastfetch >/dev/null 2>&1; then
+    as_root apt-get install -y fastfetch
+  else
+    echo "当前 APT 软件源没有 Fastfetch，但配置文件已经准备好。" >&2
+  fi
+elif has dnf; then
+  as_root dnf install -y git zsh
+  has starship || as_root dnf install -y starship || true
+  has fastfetch || as_root dnf install -y fastfetch || true
+elif has apk; then
+  as_root apk add git zsh
+  has starship || as_root apk add starship || true
+  has fastfetch || as_root apk add fastfetch || true
+elif has xbps-install; then
+  as_root xbps-install -Sy git zsh
+  has starship || as_root xbps-install -Sy starship || true
+  has fastfetch || as_root xbps-install -Sy fastfetch || true
+elif has brew; then
+  brew install git zsh starship fastfetch
+else
+  echo "没有找到支持的软件包管理器，请手动安装 git、zsh、starship 和 fastfetch。" >&2
+fi
+{{ end -}}

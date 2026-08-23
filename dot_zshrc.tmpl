@@ -1,0 +1,38 @@
+# 由 chezmoi 管理的共享 Zsh 配置。
+
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
+export ZSH_CUSTOM="${ZSH_CUSTOM:-$ZSH/custom}"
+
+# 提示符交给 Starship，避免 Oh My Zsh 重复加载主题。
+ZSH_THEME=""
+zstyle ':omz:update' mode disabled
+
+plugins=(git)
+[[ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]] && plugins+=(zsh-autosuggestions)
+[[ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]] && plugins+=(zsh-syntax-highlighting)
+
+if [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
+  source "$ZSH/oh-my-zsh.sh"
+else
+  autoload -Uz compinit && compinit
+fi
+
+# 尚未安装 Starship 时，保留一个可用的基础提示符。
+PROMPT='%F{cyan}%n@%m%f %F{blue}%1~%f %# '
+
+# pnpm 是可选项，其目录会跟随不同设备的 $HOME。
+PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
+if [[ -d "$PNPM_HOME" ]]; then
+  typeset -U path PATH
+  path=("$PNPM_HOME" $path)
+  export PNPM_HOME PATH
+fi
+
+(( $+commands[claude] )) && alias cc=claude
+
+# 私密或仅限当前设备的设置放在这里，这个文件不会由 chezmoi 管理。
+[[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi
