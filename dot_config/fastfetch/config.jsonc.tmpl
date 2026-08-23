@@ -1,6 +1,7 @@
 {{- $showBattery := true -}}
 {{- $hostIcon := "󰌢" -}}
 {{- $logoType := "small" -}}
+{{- $homeDir := .chezmoi.homeDir | replace "\\" "/" -}}
 {{- if eq .chezmoi.os "windows" -}}
 {{- $logoType = "builtin" -}}
 {{- end -}}
@@ -80,7 +81,8 @@
             "type": "command",
             "key": "╰─ 󰏖",
             "keyColor": "magenta",
-            "text": "pwsh -NoLogo -NoProfile -NonInteractive -File \"%USERPROFILE%/.config/fastfetch/winget-count.ps1\"",
+            "shell": "pwsh",
+            "text": "& \"{{ $homeDir }}/.config/fastfetch/winget-count.ps1\"",
             "format": "{result} (winget)"
         }{{ end }},
 
