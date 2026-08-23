@@ -7,8 +7,8 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias cc='claude'
-alias cx='codex'
+command -v claude >/dev/null 2>&1 && alias cc='claude'
+command -v codex >/dev/null 2>&1 && alias cx='codex'
 
 if command -v starship >/dev/null 2>&1; then
     eval "$(starship init bash)"

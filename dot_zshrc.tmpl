@@ -29,8 +29,8 @@ if [[ -d "$PNPM_HOME" ]]; then
   export PNPM_HOME PATH
 fi
 
-alias cc=claude
-alias cx=codex
+(( $+commands[claude] )) && alias cc=claude
+(( $+commands[codex] )) && alias cx=codex
 
 # 私密或仅限当前设备的设置放在这里，这个文件不会由 chezmoi 管理。
 [[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
