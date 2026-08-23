@@ -1,5 +1,6 @@
 .oh-my-zsh/cache/
 .zshrc.local
+.config/powershell/profile.local.ps1
 
 {{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros")) }}
 .config/niri/

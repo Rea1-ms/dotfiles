@@ -1,0 +1,38 @@
+{{ if eq .chezmoi.os "windows" -}}
+$ErrorActionPreference = "Stop"
+
+# 明确指向 PowerShell 7；不修改 Windows PowerShell 5.1 的 profile。
+$profileDirectory = Join-Path ([Environment]::GetFolderPath("MyDocuments")) "PowerShell"
+$profilePath = Join-Path $profileDirectory "Microsoft.PowerShell_profile.ps1"
+$startMarker = "# >>> chezmoi PowerShell 7 profile >>>"
+$loader = @'
+# >>> chezmoi PowerShell 7 profile >>>
+$managedProfile = Join-Path $HOME ".config\powershell\profile.ps1"
+if (Test-Path -LiteralPath $managedProfile) {
+    . $managedProfile
+}
+# <<< chezmoi PowerShell 7 profile <<<
+'@
+
+New-Item -ItemType Directory -Path $profileDirectory -Force | Out-Null
+$currentProfile = if (Test-Path -LiteralPath $profilePath) {
+    Get-Content -LiteralPath $profilePath -Raw
+} else {
+    ""
+}
+
+if (-not $currentProfile.Contains($startMarker)) {
+    $separator = if ($currentProfile.Length -eq 0 -or $currentProfile.EndsWith("`n")) {
+        ""
+    } else {
+        [Environment]::NewLine
+    }
+
+    $updatedProfile = $currentProfile + $separator + $loader + [Environment]::NewLine
+    [System.IO.File]::WriteAllText(
+        $profilePath,
+        $updatedProfile,
+        [System.Text.UTF8Encoding]::new($false)
+    )
+}
+{{ end -}}
