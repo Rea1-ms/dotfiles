@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -eu
+
+config="${XDG_CONFIG_HOME:-$HOME/.config}/niri/config.kdl"
+
+if grep -Eq '^[[:space:]]*// off // fn-f10-touchpad-toggle$' "$config"; then
+    sed -i -E 's|^([[:space:]]*)// off // fn-f10-touchpad-toggle$|\1off // fn-f10-touchpad-toggle|' "$config"
+    message="已关闭"
+elif grep -Eq '^[[:space:]]*off // fn-f10-touchpad-toggle$' "$config"; then
+    sed -i -E 's|^([[:space:]]*)off // fn-f10-touchpad-toggle$|\1// off // fn-f10-touchpad-toggle|' "$config"
+    message="已开启"
+else
+    notify-send "触控板" "切换配置不存在"
+    exit 1
+fi
+
+niri msg action load-config-file >/dev/null 2>&1 || true
+notify-send "触控板" "$message"

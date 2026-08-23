@@ -19,4 +19,11 @@
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
+
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros") -}}
+[".config/DankMaterialShell/plugins/DankAsusControl"]
+    type = "git-repo"
+    url = "https://github.com/shazzaam7/DankAsusControl.git"
+    refreshPeriod = "168h"
+{{ end -}}
 {{ end -}}

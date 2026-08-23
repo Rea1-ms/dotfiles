@@ -1,2 +1,8 @@
 .oh-my-zsh/cache/
 .zshrc.local
+
+{{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros")) }}
+.config/niri/
+.config/DankMaterialShell/
+.local/bin/toggle-touchpad
+{{ end }}

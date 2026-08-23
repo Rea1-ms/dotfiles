@@ -1,0 +1,8 @@
+binds {
+    Super+Alt+L hotkey-overlay-title="Lock the Screen" { spawn "dms" "ipc" "call" "lock" "lock"; }
+    Mod+Shift+S { screenshot; }
+    Alt+Ctrl+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
+    Alt+space hotkey-overlay-title="Open vicinae" { spawn "vicinae" "open"; }
+    Mod+E hotkey-overlay-title="Explorer" { spawn "nautilus"; }
+    Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
+}
