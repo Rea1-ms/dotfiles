@@ -3,9 +3,9 @@
 {{- if eq .chezmoi.os "android" -}}
 {{- $deviceClass := output "sh" "-c" "if getprop ro.build.characteristics 2>/dev/null | grep -qi tablet; then printf tablet; exit 0; fi; size=\"$(wm size 2>/dev/null | awk -F': ' '/size:/{value=$2} END{print value}')\"; density=\"$(wm density 2>/dev/null | awk '{value=$NF} END{print value}')\"; [ -n \"$density\" ] || density=\"$(getprop ro.sf.lcd_density 2>/dev/null)\"; if printf '%s' \"$size\" | grep -Eq '^[0-9]+x[0-9]+$' && printf '%s' \"$density\" | grep -Eq '^[0-9]+$'; then width=${size%x*}; height=${size#*x}; [ \"$width\" -le \"$height\" ] && short=$width || short=$height; [ $((short * 160 / density)) -ge 600 ] && printf tablet || printf phone; else printf phone; fi" -}}
 {{- if eq $deviceClass "tablet" -}}
-{{- $hostIcon = "" -}}
+{{- $hostIcon = "󰓶" -}}
 {{- else -}}
-{{- $hostIcon = "" -}}
+{{- $hostIcon = "󰄜" -}}
 {{- end -}}
 {{- $batteryProbe := output "sh" "-c" "if command -v termux-battery-status >/dev/null 2>&1 && command -v timeout >/dev/null 2>&1 && timeout 2s termux-battery-status >/dev/null 2>&1; then printf yes; else printf no; fi" -}}
 {{- $showBattery = eq $batteryProbe "yes" -}}
