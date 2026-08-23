@@ -2,6 +2,7 @@
 
 export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
 export ZSH_CUSTOM="${ZSH_CUSTOM:-$ZSH/custom}"
+export USER="${USER:-$(id -un)}"
 
 # 提示符交给 Starship，避免 Oh My Zsh 重复加载主题。
 ZSH_THEME=""
