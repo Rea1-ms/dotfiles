@@ -1,0 +1,10 @@
+{{ if eq .chezmoi.os "android" -}}
+#!/data/data/com.termux/files/usr/bin/sh
+set -u
+
+if ! command -v termux-battery-status >/dev/null 2>&1; then
+  echo "提示：请先执行 pkg install termux-api，再安装同来源的 Termux:API 安卓应用。" >&2
+elif ! command -v timeout >/dev/null 2>&1 || ! timeout 2s termux-battery-status >/dev/null 2>&1; then
+  echo "提示：Termux:API 电池接口无响应，请确认安卓插件应用与 Termux 来源、签名一致。" >&2
+fi
+{{ end -}}

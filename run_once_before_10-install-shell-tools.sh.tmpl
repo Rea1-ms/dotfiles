@@ -18,7 +18,7 @@ as_root() {
 }
 
 if has pkg; then
-  pkg install -y git zsh starship fastfetch
+  pkg install -y git zsh starship fastfetch{{ if eq .chezmoi.os "android" }} termux-api{{ end }}
 elif has pacman; then
   as_root pacman -S --needed --noconfirm git zsh starship fastfetch
 elif has apt-get; then
