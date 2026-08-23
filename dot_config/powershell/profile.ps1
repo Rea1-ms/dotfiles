@@ -11,6 +11,9 @@ if (-not $global:DotfilesPowerShellProfileLoaded) {
     $env:PYTHONIOENCODING = "utf-8"
     $env:PYTHONUTF8 = "1"
 
+    Set-Alias -Name cc -Value claude
+    Set-Alias -Name cx -Value codex
+
     if ($Host.Name -eq "ConsoleHost") {
         Import-Module PSReadLine -ErrorAction SilentlyContinue
         if (Get-Module PSReadLine) {
