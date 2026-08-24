@@ -1,7 +1,6 @@
 {{- $showBattery := true -}}
 {{- $hostIcon := "󰌢" -}}
 {{- $logoType := "small" -}}
-{{- $homeDir := .chezmoi.homeDir | replace "\\" "/" -}}
 {{- if eq .chezmoi.os "windows" -}}
 {{- $logoType = "builtin" -}}
 {{- end -}}
@@ -74,17 +73,9 @@
         },
         {
             "type": "packages",
-            "key": "{{ if eq .chezmoi.os "windows" }}├─{{ else }}╰─{{ end }} 󰏖",
-            "keyColor": "magenta"
-        }{{ if eq .chezmoi.os "windows" }},
-        {
-            "type": "command",
             "key": "╰─ 󰏖",
-            "keyColor": "magenta",
-            "shell": "pwsh",
-            "text": "& \"{{ $homeDir }}/.config/fastfetch/winget-count.ps1\"",
-            "format": "{result} (winget)"
-        }{{ end }},
+            "keyColor": "magenta"
+        },
 
         "break",
 

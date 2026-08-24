@@ -2,10 +2,6 @@
 .zshrc.local
 .config/powershell/coreutils.generated.ps1
 
-{{ if ne .chezmoi.os "windows" }}
-.config/fastfetch/winget-count.ps1
-{{ end }}
-
 {{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros")) }}
 .config/niri/
 .config/DankMaterialShell/
