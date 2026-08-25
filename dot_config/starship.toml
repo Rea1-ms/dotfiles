@@ -30,6 +30,7 @@ python_yellow = "#FFE873"
 node = "#6CA35E"
 green = "#007800"
 red = "#F1184C"
+time = "#9575CD"
 duration = "#FFCD58"
 white = "#FFFFFF"
 
@@ -70,8 +71,8 @@ format = "[](fg:slate)[ $user ]($style)[](fg:slate) "
 [time]
 disabled = false
 time_format = "%H:%M:%S"
-style = "fg:ink bg:duration"
-format = "[](fg:duration)[ 󰥔 $time ]($style)[](fg:duration) "
+style = "fg:white bg:time"
+format = "[](fg:time)[ 󰥔 $time ]($style)[](fg:time) "
 
 [directory]
 style = "fg:ink bg:directory"
