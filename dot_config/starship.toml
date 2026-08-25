@@ -5,7 +5,7 @@ palette = "omp"
 format = """
 $os\
 $username\
-$hostname\
+$time\
 $cmd_duration\
 $directory\
 $python\
@@ -65,13 +65,13 @@ Unknown = "[](fg:slate)[ ? ](fg:cyan bg:slate)[](fg:slate)"
 show_always = true
 style_user = "fg:cyan bg:slate"
 style_root = "bold fg:red bg:slate"
-format = "[](fg:slate)[ $user]($style)"
+format = "[](fg:slate)[ $user ]($style)[](fg:slate) "
 
-[hostname]
-ssh_only = false
-trim_at = "."
-style = "fg:cyan bg:slate"
-format = "[@$hostname ]($style)[](fg:slate) "
+[time]
+disabled = false
+time_format = "%H:%M:%S"
+style = "fg:ink bg:duration"
+format = "[](fg:duration)[ 󰥔 $time ]($style)[](fg:duration) "
 
 [directory]
 style = "fg:ink bg:directory"
