@@ -144,16 +144,6 @@
       "id": "audioInput",
       "enabled": true,
       "width": 50
-    },
-    {
-      "id": "nightMode",
-      "enabled": true,
-      "width": 50
-    },
-    {
-      "id": "darkMode",
-      "enabled": true,
-      "width": 50
     }
   ],
   "showWorkspaceIndex": false,
@@ -584,6 +574,10 @@
         "clipboard",
         "notificationButton",
         "battery",
+        {
+          "id": "dankBuds",
+          "enabled": true
+        },
         {
           "id": "dankAsusControlCenter",
           "enabled": true
