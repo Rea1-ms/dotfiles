@@ -1,4 +1,8 @@
 {
+  "dankBuds": {
+    "enabled": true,
+    "listeningEnabled": true
+  },
   "dankAsusControlCenter": {
     "enabled": true
   }
