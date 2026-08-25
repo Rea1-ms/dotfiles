@@ -39,7 +39,21 @@ if (-not $global:DotfilesPowerShellProfileLoaded) {
     }
 
     if ((Get-Command starship -ErrorAction SilentlyContinue) -and $env:STARSHIP_SHELL -ne "pwsh") {
-        Invoke-Expression (&starship init powershell)
+        $starshipInit = &starship init powershell --print-full-init | Out-String
+        $historyCondition = 'if ($lastCmd = Get-History -Count 1) {'
+        $singleUseHistoryCondition = @'
+if (($lastCmd = Get-History -Count 1) -and $lastCmd.Id -ne $script:LastHistoryId) {
+            $script:LastHistoryId = $lastCmd.Id
+'@
+
+        if ($starshipInit.Contains($historyCondition)) {
+            # 空命令不会进入 PowerShell 历史；避免重复显示上一条命令的耗时。
+            $starshipInit = $starshipInit.Replace($historyCondition, $singleUseHistoryCondition)
+        } else {
+            Write-Warning "当前 Starship 初始化脚本无法应用 cmd_duration 去重补丁。"
+        }
+
+        Invoke-Expression $starshipInit
     }
 
     $coreutilsProfile = Join-Path $HOME ".config\powershell\coreutils.generated.ps1"
