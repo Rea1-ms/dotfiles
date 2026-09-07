@@ -1,0 +1,21 @@
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros") -}}
+#!/bin/sh
+set -eu
+
+source_config="{{ .chezmoi.sourceDir }}/.chezmoitemplates/greetd-config.toml"
+target_config="/etc/greetd/config.toml"
+
+if ! command -v dms-greeter >/dev/null 2>&1; then
+  echo "未安装 dms-greeter，跳过登录配置。"
+  exit 0
+fi
+
+if [ "$(id -u)" -eq 0 ]; then
+  install -D -o root -g root -m 600 "$source_config" "$target_config"
+elif command -v sudo >/dev/null 2>&1; then
+  sudo install -D -o root -g root -m 600 "$source_config" "$target_config"
+else
+  echo "无法安装登录配置：需要 root 或 sudo 权限。" >&2
+  exit 1
+fi
+{{ end -}}
