@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -eu
+
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros") -}}
+state="{{ .chezmoi.homeDir }}/.config/niri/touchpad-state.kdl"
+
+if [ ! -e "$state" ]; then
+    mkdir -p "$(dirname "$state")"
+    umask 077
+    cat >"$state" <<'EOF'
+// 本地运行状态，特意不交给 chezmoi 管理。
+input {
+    touchpad {
+        // off // fn-f10-touchpad-toggle
+        tap
+        natural-scroll
+    }
+}
+EOF
+fi
+{{ end -}}

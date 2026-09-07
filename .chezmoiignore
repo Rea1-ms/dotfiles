@@ -1,6 +1,7 @@
 .oh-my-zsh/cache/
 .zshrc.local
 .config/powershell/coreutils.generated.ps1
+.config/niri/touchpad-state.kdl
 
 {{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros")) }}
 .config/niri/

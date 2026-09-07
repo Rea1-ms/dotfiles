@@ -2,7 +2,7 @@
 
 set -eu
 
-config="${XDG_CONFIG_HOME:-$HOME/.config}/niri/config.kdl"
+config="${XDG_CONFIG_HOME:-$HOME/.config}/niri/touchpad-state.kdl"
 
 if grep -Eq '^[[:space:]]*// off // fn-f10-touchpad-toggle$' "$config"; then
     sed -i -E 's|^([[:space:]]*)// off // fn-f10-touchpad-toggle$|\1off // fn-f10-touchpad-toggle|' "$config"
