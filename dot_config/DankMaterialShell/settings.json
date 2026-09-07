@@ -225,7 +225,7 @@
   "greeterRememberLastSession": true,
   "greeterRememberLastUser": true,
   "greeterAutoLogin": false,
-  "greeterEnableFprint": true,
+  "greeterEnableFprint": false,
   "greeterEnableU2f": false,
   "greeterWallpaperPath": "",
   "greeterLockDateFormat": "",
@@ -247,7 +247,9 @@
   "rememberLastQuery": false,
   "rememberLastMode": true,
   "spotlightSectionViewModes": {},
-  "appDrawerSectionViewModes": {},
+  "appDrawerSectionViewModes": {
+    "apps": "list"
+  },
   "niriOverviewOverlayEnabled": true,
   "niriOverviewLauncherStyle": "full",
   "dankLauncherV2Size": "compact",
@@ -458,7 +460,7 @@
   "lockScreenShowMediaPlayer": true,
   "lockScreenPowerOffMonitorsOnLock": false,
   "lockAtStartup": false,
-  "enableFprint": true,
+  "enableFprint": false,
   "maxFprintTries": 15,
   "enableU2f": false,
   "u2fMode": "or",
