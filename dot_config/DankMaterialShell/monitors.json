@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "configurations": [
+    {
+      "id": "profile_1789542040904_b7xjeap",
+      "name": "ktc",
+      "outputs": {
+        "eDP-1": {
+          "mode": null,
+          "position": {
+            "x": 2048,
+            "y": 360
+          },
+          "scale": 1,
+          "transform": "Normal",
+          "vrr": false,
+          "disabled": true,
+          "niri": {}
+        },
+        "HDMI-A-1": {
+          "mode": "2560x1440@144.002",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "scale": 1.25,
+          "transform": "Normal",
+          "vrr": false,
+          "disabled": false,
+          "niri": {}
+        }
+      }
+    },
+    {
+      "id": "profile_1789542158890_8ays84n",
+      "name": "internal",
+      "outputs": {
+        "eDP-1": {
+          "mode": "1920x1200@120.003",
+          "position": {
+            "x": 2048,
+            "y": 72
+          },
+          "scale": 1,
+          "transform": "Normal",
+          "vrr": false,
+          "disabled": false,
+          "niri": {
+            "disabled": false
+          }
+        },
+        "HDMI-A-1": {
+          "mode": "2560x1440@144.002",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "scale": 1.25,
+          "transform": "Normal",
+          "vrr": false,
+          "disabled": false,
+          "niri": {}
+        }
+      }
+    },
+    {
+      "id": "auto_5af6115",
+      "name": "",
+      "outputs": {
+        "eDP-1": {
+          "mode": "1920x1200@120.003",
+          "position": {
+            "x": 2048,
+            "y": 72
+          },
+          "scale": 1,
+          "transform": "Normal",
+          "vrr": false,
+          "disabled": false,
+          "niri": {}
+        }
+      }
+    }
+  ]
+}
