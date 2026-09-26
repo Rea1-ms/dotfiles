@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros") -}}
+# 主配置引用此文件；具体内容由桌面程序根据显示器方案生成。
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/niri/dms"
+mkdir -p "$config_dir"
+if [ ! -e "$config_dir/outputs.kdl" ]; then
+    (set -C; : > "$config_dir/outputs.kdl")
+fi
+{{ end -}}

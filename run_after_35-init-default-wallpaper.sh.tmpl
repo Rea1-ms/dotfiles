@@ -1,0 +1,24 @@
+#!/bin/sh
+set -eu
+
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros") -}}
+# 仅初始化全新会话；已有会话中的壁纸和其他状态全部保留。
+python3 - <<'PY'
+import json
+import os
+from pathlib import Path
+
+home = Path.home()
+state = Path(os.environ.get("XDG_STATE_HOME") or home / ".local/state")
+session = state / "DankMaterialShell/session.json"
+wallpaper = home / "Pictures/wallpapers/anna-tragelehn-dividedsky4k.jpg"
+if not session.exists() and wallpaper.is_file():
+    session.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with session.open("x") as stream:
+            json.dump({"wallpaperPath": str(wallpaper)}, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
+    except FileExistsError:
+        pass
+PY
+{{ end -}}

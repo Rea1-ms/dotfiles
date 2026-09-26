@@ -1,0 +1,5 @@
+# 停止跟踪自动生成的配置，旧副本保留在本地。
+/dot_config/DankMaterialShell/firefox.css
+/dot_config/niri/dms/colors.kdl
+/dot_config/niri/dms/empty_outputs.kdl
+/dot_config/niri/dms/empty_windowrules.kdl

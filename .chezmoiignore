@@ -3,8 +3,15 @@
 .config/powershell/coreutils.generated.ps1
 .config/niri/touchpad-state.kdl
 
+# 由桌面程序生成，保留本机内容。
+.config/DankMaterialShell/firefox.css
+.config/niri/dms/colors.kdl
+.config/niri/dms/outputs.kdl
+.config/niri/dms/windowrules.kdl
+
 {{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "endeavouros")) }}
 .config/niri/
 .config/DankMaterialShell/
 .local/bin/toggle-touchpad
+Pictures/wallpapers/anna-tragelehn-dividedsky4k.jpg
 {{ end }}
